@@ -1,1 +1,1 @@
-# SimpleGoWebRestAPI
+# simple-web-application
