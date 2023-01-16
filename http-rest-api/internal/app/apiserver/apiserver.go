@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/Medvedevsky/simple-web-application/internal/app/store"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -12,6 +13,7 @@ type APIServer struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
+	store  *store.Store
 }
 
 func NewServer(config *Config) *APIServer {
@@ -29,6 +31,10 @@ func (a *APIServer) Start() error {
 	}
 
 	a.configureRouter()
+
+	if err := a.configureStore(); err != nil {
+		return err
+	}
 
 	a.logger.Info("starting api server")
 
@@ -60,8 +66,21 @@ func (a *APIServer) configureRouter() {
 	})
 }
 
-func (s *APIServer) handleHello() http.HandlerFunc {
+func (a *APIServer) handleHello() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, "Hello")
 	}
+}
+
+func (a *APIServer) configureStore() error {
+
+	st := store.NewDb(a.config.Store)
+
+	if err := st.Open(); err != nil {
+		return err
+	}
+
+	a.store = st
+
+	return nil
 }
