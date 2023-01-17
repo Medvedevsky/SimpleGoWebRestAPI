@@ -5,5 +5,7 @@ type Config struct {
 }
 
 func NewConfig() *Config {
-	return &Config{}
+	return &Config{
+		DatabaseURL: "host=localhost port=5432 user=postgres password=andrey5522 dbname=restapi_dev sslmode=disable",
+	}
 }
