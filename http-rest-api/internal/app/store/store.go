@@ -7,20 +7,20 @@ import (
 )
 
 type Store struct {
-	config *Config
-	db     *sql.DB
+	connectionString string
+	db               *sql.DB
 }
 
-func NewDb(config *Config) *Store {
+func NewDb(connectionString string) *Store {
 	return &Store{
-		config: config,
+		connectionString: connectionString,
 	}
 }
 
 func (s *Store) Open() error {
 
 	// db, err := sql.Open("postgres", "user=test password=test dbname=test sslmode=disable")
-	db, err := sql.Open("postgres", s.config.DatabaseURL)
+	db, err := sql.Open("postgres", s.connectionString)
 	if err != nil {
 		return err
 	}

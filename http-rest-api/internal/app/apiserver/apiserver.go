@@ -74,7 +74,7 @@ func (a *APIServer) handleHello() http.HandlerFunc {
 
 func (a *APIServer) configureStore() error {
 
-	st := store.NewDb(a.config.Store)
+	st := store.NewDb(a.config.DatabaseUrl)
 
 	if err := st.Open(); err != nil {
 		return err
